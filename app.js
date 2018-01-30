@@ -1,6 +1,6 @@
 Vue.component('drawing-canvas', {
 	props: ['drawable', 'path'],
-	template: '<canvas width=256 height=256 @mousedown="onMouseDown" @mouseup="onMouseUp" @mouseout="clear" @mousemove="onMouseMove" />',
+	template: '<canvas width=256 height=256 @mousedown="onMouseDown" @mouseup="onMouseUp" @mouseout="onMouseOut" @mousemove="onMouseMove" />',
 	data() {
 		return {
 			mouseDown: false,
@@ -40,13 +40,48 @@ Vue.component('drawing-canvas', {
 				y: pos.y * this.rect.height,
 			};
 		},
-		draw() {
+		drawFrame() {
 			const ctx = this.$el.getContext('2d');
-			ctx.strokeStyle = 'black';
-
-			ctx.clearRect(0, 0, this.$el.width, this.$el.height);
+			ctx.strokeStyle = '#eee';
+			ctx.lineWidth = 4;
 
 			ctx.beginPath();
+
+			ctx.moveTo(this.$el.width*3/8, this.$el.height*2/8);
+			ctx.lineTo(this.$el.width*2/8, this.$el.height*2/8);
+			ctx.lineTo(this.$el.width*2/8, this.$el.height*3/8);
+
+			ctx.moveTo(this.$el.width*5/8, this.$el.height*2/8);
+			ctx.lineTo(this.$el.width*6/8, this.$el.height*2/8);
+			ctx.lineTo(this.$el.width*6/8, this.$el.height*3/8);
+
+			ctx.moveTo(this.$el.width*3/8, this.$el.height*6/8);
+			ctx.lineTo(this.$el.width*2/8, this.$el.height*6/8);
+			ctx.lineTo(this.$el.width*2/8, this.$el.height*5/8);
+
+			ctx.moveTo(this.$el.width*5/8, this.$el.height*6/8);
+			ctx.lineTo(this.$el.width*6/8, this.$el.height*6/8);
+			ctx.lineTo(this.$el.width*6/8, this.$el.height*5/8);
+
+			ctx.moveTo(this.$el.width*7/16, this.$el.height/2);
+			ctx.lineTo(this.$el.width*9/16, this.$el.height/2);
+
+			ctx.moveTo(this.$el.width/2, this.$el.height*7/16);
+			ctx.lineTo(this.$el.width/2, this.$el.height*9/16);
+
+			ctx.stroke();
+		},
+		draw() {
+			const ctx = this.$el.getContext('2d');
+			ctx.clearRect(0, 0, this.$el.width, this.$el.height);
+
+			this.drawFrame();
+
+			ctx.strokeStyle = 'black';
+			ctx.lineWidth = 2;
+			ctx.beginPath();
+
+			ctx.moveTo(0, 0);
 
 			if (this.path_.length > 0) {
 				const startPos = this.posToCanvasPos(this.path_[0]);
@@ -94,6 +129,11 @@ Vue.component('drawing-canvas', {
 				this.draw();
 
 				this.$emit('update:path', this.path_);
+			}
+		},
+		onMouseOut(ev) {
+			if (this.mouseDown) {
+				this.clear();
 			}
 		},
 		clear() {
