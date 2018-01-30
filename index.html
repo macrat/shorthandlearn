@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<script defer src="https://unpkg.com/vue"></script>
+		<script defer src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+		<script defer src="/app.js"></script>
+
+		<style>
+body {
+	margin: 0;
+}
+main {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	min-height: 100vh;
+}
+
+span {
+	display: block;
+	text-align: center;
+	font-size: 700%;
+	margin: .3em;
+}
+
+div {
+	display: flex;
+	justify-content: center;
+}
+
+canvas {
+	width: 30em;
+	height: 30em;
+	border: 1px solid gray;
+	margin: .5em;
+}
+		</style>
+	</head>
+
+	<body>
+		<main>
+			<span>{{ text }}</span>
+			<div>
+				<drawing-canvas ref=exam :drawable=false :path=path></drawing-canvas>
+				<drawing-canvas ref=draw :drawable=true @end-draw="endDraw"></drawing-canvas>
+			</div>
+		</main>
+	</body>
+</html>
