@@ -9,9 +9,9 @@ import util
 class Classifier(chainer.Chain):
     def __init__(self):
         super().__init__(
-            conv1=L.Convolution2D(1, 16, 4),
-            conv2=L.Convolution2D(16, 32, 4),
-            conv3=L.Convolution2D(32, 64, 4),
+            conv1=L.Convolution2D(1, 16, 2),
+            conv2=L.Convolution2D(16, 32, 2),
+            conv3=L.Convolution2D(32, 64, 2),
             l1=L.Linear(256, 128),
             l2=L.Linear(128, 45),
         )
@@ -39,9 +39,9 @@ class Classifier(chainer.Chain):
         return h.data, accuracy.data
 
 
-def make_data(size=32):
+def make_data(size):
     data = util.load_pathes()
-    #data = util.increase_data(data)
+    data = util.increase_data(data)
     labels, images = util.learn_data(data, size=size)
 
     #labels = [x for x in labels if x in 'あかさたなはまやらわ']
@@ -58,8 +58,8 @@ def make_data(size=32):
 if __name__ == '__main__':
     model = Classifier()
 
-    labels, images = make_data()
-    keys = numpy.random.random(len(labels)) > 0.2
+    labels, images = make_data(16)
+    keys = numpy.random.random(len(labels)) > 0.1
 
     train = images[keys], labels[keys]
     test = images[numpy.logical_not(keys)], labels[numpy.logical_not(keys)]
