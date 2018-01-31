@@ -73,3 +73,16 @@ if __name__ == '__main__':
 
             print('{},{},{}'.format(i, acc, acc2), file=log)
             print('{:4d}: {:7.2%} {:7.2%}'.format(i, float(acc), float(acc2)))
+
+    data = util.load_pathes()
+    keys = sorted(data.keys())
+    result = []
+    for text in keys:
+        pathes = data[text]
+        images = numpy.array([util.to_image(path, size=16) for path in pathes])
+        images = (images / 255).reshape(-1, 1, 16, 16).astype(numpy.float32)
+        result.append([text, sum(model.predict(images).data.argmax(1) == keys.index(text)) / len(images)])
+
+    result.sort(key=lambda x: x[1])
+    for text, rate in result:
+        print('{}: {:7.2%}'.format(text, rate))
