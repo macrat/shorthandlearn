@@ -61,7 +61,7 @@ def learn_data(data, size=64):
     return labels, numpy.array(images)
 
 
-def increase_data(data):
+def increase(data):
     data = dict(data)
     for text, pathes in data.items():
         newdata = []
@@ -78,4 +78,12 @@ def increase_data(data):
     return data
 
 
-increase_data(load_pathes())
+def path_length(path):
+    return numpy.sqrt(((path[:-1] - path[1:]) ** 2).sum(axis=1)).sum()
+
+
+def trim_short(data, threshold=0.01):
+    return {
+        text: [p for p in pathes if path_length(p) > threshold]
+        for text, pathes in data.items()
+    }

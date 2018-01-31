@@ -41,7 +41,8 @@ class Classifier(chainer.Chain):
 
 def make_data(size):
     data = util.load_pathes()
-    data = util.increase_data(data)
+    data = util.trim_short(data)
+    data = util.increase(data)
     labels, images = util.learn_data(data, size=size)
 
     #labels = [x for x in labels if x in 'あかさたなはまやらわ']
