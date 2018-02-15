@@ -42,7 +42,7 @@ Vue.component('drawing-canvas', {
 		},
 		drawFrame() {
 			const ctx = this.$el.getContext('2d');
-			ctx.strokeStyle = '#eee';
+			ctx.strokeStyle = '#ddd';
 			ctx.lineWidth = 4;
 
 			ctx.beginPath();
